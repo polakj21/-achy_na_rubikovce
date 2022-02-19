@@ -1,0 +1,1 @@
+šachy_na_rubikovce
