@@ -1,7 +1,11 @@
-import pygame
+import pygame,sys
+from mapy import *
 pygame.init()
 
 screen = pygame.display.set_mode((600,500))
+
+black = pygame.sprite.Group()
+white = pygame.sprite.Group()
 
 K_ = pygame.image.load("šachy_textury/black/král.png").convert_alpha()
 D_ = pygame.image.load("šachy_textury/black/dáma.png").convert_alpha()
@@ -100,3 +104,47 @@ class p(pygame.sprite.Sprite):
         self.image = p_
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
+        
+
+def set_position():
+    global black,white
+    for pos_ind,position in enumerate(positions):
+        for line_ind,line in enumerate(position):
+            for sym_ind,sym in enumerate(line):
+                pos = (sym_ind*34+poss[pos_ind-1][0],line_ind*34+poss[pos_ind-1][1])
+                if sym == "V":
+                    entity = V(pos)
+                    black.add(entity)
+                elif sym == "J":
+                    entity = J(pos)
+                    black.add(entity)
+                elif sym == "S":
+                    entity = S(pos)
+                    black.add(entity)
+                elif sym == "D":
+                    entity = D(pos)
+                    black.add(entity)
+                elif sym == "K":
+                    entity = K(pos)
+                    black.add(entity)
+                elif sym == "P":
+                    entity = P(pos)
+                    black.add(entity)
+                elif sym == "v":
+                    entity = v(pos)
+                    white.add(entity)
+                elif sym == "j":
+                    entity = j(pos)
+                    white.add(entity)
+                elif sym == "s":
+                    entity = s(pos)
+                    white.add(entity)
+                elif sym == "d":
+                    entity = d(pos)
+                    white.add(entity)
+                elif sym == "k":
+                    entity = k(pos)
+                    white.add(entity)
+                elif sym == "p":
+                    entity = p(pos)
+                    white.add(entity)
