@@ -21,6 +21,7 @@ def get_options(moves,board_ind):
                 screen.blit(choise_tile,(sym_ind*32+poss[board_ind][0],line_ind*32+poss[board_ind][1]))                
 
 selected = False
+color = white
 while True:
     events = pygame.event.get()
     for event in events:
@@ -31,36 +32,86 @@ while True:
     if key[pygame.K_ESCAPE]:
         pygame.quit()
         sys.exit()
-        
-    if selected:
-        mouse_pos = pygame.mouse.get_pos()
-        if pygame.mouse.get_pressed()[0]:
-            if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
-                positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
-                positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
-                black.empty()
-                white.empty()
-                set_position()
-                pygame.time.wait(100)
-                selected = False
-        
-        screen.fill((38,33,28))
-        set_boards()
-        get_options(chosen_one.moves,chosen_one.ind)
-        black.draw(screen)
-        white.draw(screen)
-        pygame.display.flip()
-    else:
-        for figure in black:
+    if color == black:   
+        if selected:
             mouse_pos = pygame.mouse.get_pos()
-            if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
-                figure.set_movement()
-                chosen_one = figure
-                selected = True
+            if pygame.mouse.get_pressed()[0]:
+                try:
+                    if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
+                        positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
+                        positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
+                        black.empty()
+                        white.empty()
+                        set_position()
+                        pygame.time.wait(100)
+                        selected = False
+                        color = white
+                    else:
+                        pygame.time.wait(100)
+                        selected = False
+                except:
+                    pygame.time.wait(100)
+                    selected = False
+            
+            screen.fill((38,33,28))
+            set_boards()
+            get_options(chosen_one.moves,chosen_one.ind)
+            black.draw(screen)
+            white.draw(screen)
+            pygame.display.flip()
+        else:
+            for figure in black:
+                mouse_pos = pygame.mouse.get_pos()
+                if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
+                    figure.set_movement()
+                    chosen_one = figure
+                    pygame.time.wait(100)
+                    selected = True
+                    
+            screen.fill((38,33,28))
+            set_boards()
+            black.draw(screen)
+            white.draw(screen)
+    else:
+        if selected:
+            mouse_pos = pygame.mouse.get_pos()
+            if pygame.mouse.get_pressed()[0]:
+                try:
+                    if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
+                        positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
+                        positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
+                        black.empty()
+                        white.empty()
+                        set_position()
+                        pygame.time.wait(100)
+                        selected = False
+                        color = black
+                    else:
+                        pygame.time.wait(100)
+                        selected = False
+                except:
+                    pygame.time.wait(100)
+                    selected = False
                 
-        screen.fill((38,33,28))
-        set_boards()
-        black.draw(screen)
-        white.draw(screen)
+            
+            screen.fill((38,33,28))
+            set_boards()
+            get_options(chosen_one.moves,chosen_one.ind)
+            black.draw(screen)
+            white.draw(screen)
+            pygame.display.flip()
+        else:
+            for figure in white:
+                mouse_pos = pygame.mouse.get_pos()
+                if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
+                    figure.set_movement()
+                    chosen_one = figure
+                    pygame.time.wait(100)
+                    selected = True
+                    
+            screen.fill((38,33,28))
+            set_boards()
+            black.draw(screen)
+            white.draw(screen)
     pygame.display.update()
     clock.tick(60)

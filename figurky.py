@@ -58,7 +58,52 @@ class J(pygame.sprite.Sprite):
         self.checking = False
         self.type = "J"
     def set_movement(self):
-        pass
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y+=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=2
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y-=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=2
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y+=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=2
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y-=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=2
+        y-=1
+        self.setting(x,y)
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.capitalize() == place:
+                pass
+            elif place == "k":
+                self.checking = True
+                self.moves[y][x] = "C"
+            else:
+                self.moves[y][x] = "X"
+        
 class V(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board):
         super().__init__()
@@ -205,7 +250,51 @@ class j(pygame.sprite.Sprite):
         self.checking = False
         self.type = "j"
     def set_movement(self):
-        pass
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y+=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=2
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y-=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=2
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y+=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=2
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y-=2
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=2
+        y-=1
+        self.setting(x,y)
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.lower() == place:
+                pass
+            elif place == "K":
+                self.checking = True
+                self.moves[y][x] = "C"
+            else:
+                self.moves[y][x] = "X"
 class v(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board):
         super().__init__()
@@ -218,7 +307,74 @@ class v(pygame.sprite.Sprite):
         self.checking = False
         self.type = "v"
     def set_movement(self):
-        pass
+        x,y,ind = self.board[0],self.board[1],self.ind
+        while x != 0:
+            x-=1
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.lower() == place:
+                break
+            elif place == "K":
+                self.checking = True
+                self.moves[y][x] = "C"
+                if x != 0:
+                    self.moves[ind][y][x-1] = "C"
+                break
+            else:
+                self.moves[y][x] = "X"
+                break
+        x = self.board[0]
+        while x != 7:
+            x+=1
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.lower() == place:
+                break
+            elif place == "K":
+                self.checking = True
+                self.moves[y][x] = "C"
+                if x != 7:
+                    self.moves[y][x+1] = "C"
+                break
+            else:
+                self.moves[y][x] = "X"
+                break
+        x = self.board[0]
+        while y != 7:
+            y+=1
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.lower() == place:
+                break
+            elif place == "K":
+                self.checking = True
+                self.moves[y][x] = "C"
+                if y != 7:
+                    self.moves[ind][y+1][x] = "C"
+                break
+            else:
+                self.moves[y][x] = "X"
+                break
+        y = self.board[1]
+        while y != 0:
+            y-=1
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.lower() == place:
+                break
+            elif place == "K":
+                self.checking = True
+                self.moves[y][x] = "C"
+                if y != 0:
+                    self.moves[ind][y-1][x] = "C"
+                break
+            else:
+                self.moves[y][x] = "X"
+                break
 class s(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board):
         super().__init__()
