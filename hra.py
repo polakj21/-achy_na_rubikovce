@@ -6,10 +6,21 @@ pygame.init()
 clock = pygame.time.Clock()
 pygame.display.set_caption("¤šachy na rubikovce¤")
 pygame.display.set_icon(d_)
-screen = pygame.display.set_mode((1258,952))
+screen = pygame.display.set_mode((1184,896))
 
 set_position()
 
+choise_tile = pygame.Surface((32,32))
+choise_tile.fill("green")
+choise_tile.set_alpha(200, pygame.RLEACCEL)
+
+def get_options(moves,board_ind):
+    for line_ind,line in enumerate(moves):
+        for sym_ind,sym in enumerate(line):
+            if sym == "X":
+                screen.blit(choise_tile,(sym_ind*32+poss[board_ind][0],line_ind*32+poss[board_ind][1]))                
+
+selected = False
 while True:
     events = pygame.event.get()
     for event in events:
@@ -19,11 +30,37 @@ while True:
     key = pygame.key.get_pressed()
     if key[pygame.K_ESCAPE]:
         pygame.quit()
-        sys.exit()  
-            
-    screen.fill((38,33,28))
-    set_boards()
-    black.draw(screen)
-    white.draw(screen)
+        sys.exit()
+        
+    if selected:
+        mouse_pos = pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
+                positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
+                positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
+                black.empty()
+                white.empty()
+                set_position()
+                pygame.time.wait(100)
+                selected = False
+        
+        screen.fill((38,33,28))
+        set_boards()
+        get_options(chosen_one.moves,chosen_one.ind)
+        black.draw(screen)
+        white.draw(screen)
+        pygame.display.flip()
+    else:
+        for figure in black:
+            mouse_pos = pygame.mouse.get_pos()
+            if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
+                figure.set_movement()
+                chosen_one = figure
+                selected = True
+                
+        screen.fill((38,33,28))
+        set_boards()
+        black.draw(screen)
+        white.draw(screen)
     pygame.display.update()
     clock.tick(60)
