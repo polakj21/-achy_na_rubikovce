@@ -1,6 +1,7 @@
 import pygame,sys
 from mapy import *
 from figurky import *
+from figurky2 import *
 pygame.init()
 
 clock = pygame.time.Clock()
