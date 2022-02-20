@@ -41,6 +41,7 @@ while True:
                     if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
                         positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
+                        set_position()
                         black.empty()
                         white.empty()
                         kings.empty()
@@ -48,6 +49,12 @@ while True:
                         pygame.time.wait(100)
                         selected = False
                         color = white
+                        if figure.type == "P" or figure.type == "P__":
+                            screen.fill((38,33,28))
+                            set_boards()
+                            black.draw(screen)
+                            white.draw(screen)
+                            pygame.display.flip()
                     else:
                         pygame.time.wait(100)
                         selected = False
@@ -81,6 +88,7 @@ while True:
                     if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
                         positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
+                        set_position()
                         black.empty()
                         white.empty()
                         kings.empty()
@@ -88,8 +96,12 @@ while True:
                         pygame.time.wait(100)
                         selected = False
                         color = black
-                        if figure.type == "p":
-                            figure.moved = True
+                        if figure.type == "p" or figure.type == "p__":
+                            screen.fill((38,33,28))
+                            set_boards()
+                            black.draw(screen)
+                            white.draw(screen)
+                            pygame.display.flip()
                     else:
                         pygame.time.wait(100)
                         selected = False

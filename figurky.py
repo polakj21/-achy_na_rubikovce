@@ -424,24 +424,32 @@ class P(pygame.sprite.Sprite):
             self.setting(x,y+1)
             self.setting2(x-1,y+1)
             self.setting2(x+1,y+1)
+            if y == 7:
+                transform("b",x,y,self.ind)
             if self.yes:
                 self.setting(x,y+2)
         elif rotation == 2:
             self.setting(x-1,y+1)
             self.setting2(x-1,y)
             self.setting2(x-1,y-1)
+            if x == 0:
+                transform("b",x,y,self.ind)
             if self.yes:
                 self.setting2(x-2,y)
         elif rotation == 3:
             self.setting(x,y-1)
             self.setting2(x-1,y-1)
             self.setting2(x+1,y-1)
+            if y == 0:
+                transform("b",x,y,self.ind)
             if self.yes:
                 self.setting(x,y-2)
         elif rotation == 4:
             self.setting(x+1,y+1)
             self.setting2(x+1,y)
             self.setting2(x+1,y-1)
+            if x == 7:
+                transform("b",x,y,self.ind)
             if self.yes:
                 self.setting(x+2,y)
     def setting(self,x,y):
@@ -484,18 +492,26 @@ class P__(pygame.sprite.Sprite):
             self.setting(x,y+1)
             self.setting2(x-1,y+1)
             self.setting2(x+1,y+1)
+            if y == 7:
+                transform("b",x,y,self.ind)
         elif rotation == 2:
             self.setting(x-1,y+1)
             self.setting2(x-1,y)
             self.setting2(x-1,y-1)
+            if x == 0:
+                transform("b",x,y,self.ind)
         elif rotation == 3:
             self.setting(x,y-1)
             self.setting2(x-1,y-1)
             self.setting2(x+1,y-1)
+            if y == 0:
+                transform("b",x,y,self.ind)
         elif rotation == 4:
             self.setting(x+1,y+1)
             self.setting2(x+1,y)
             self.setting2(x+1,y-1)
+            if x == 7:
+                transform("b",x,y,self.ind)
     def setting(self,x,y):
         if x >-1 and y >-1 and x < 8 and y < 8:
             ind = self.ind
@@ -600,6 +616,7 @@ def set_position():
                 if sym == "X" or sym == "C":
                     moves[line_ind][sym_ind] = sym
     king_check()
+    
 def king_check():
     global black,white,kings,positions
     x = False
