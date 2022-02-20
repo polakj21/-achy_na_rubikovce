@@ -43,6 +43,7 @@ while True:
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
                         black.empty()
                         white.empty()
+                        kings.empty()
                         set_position()
                         pygame.time.wait(100)
                         selected = False
@@ -82,10 +83,13 @@ while True:
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
                         black.empty()
                         white.empty()
+                        kings.empty()
                         set_position()
                         pygame.time.wait(100)
                         selected = False
                         color = black
+                        if figure.type == "p":
+                            figure.moved = True
                     else:
                         pygame.time.wait(100)
                         selected = False

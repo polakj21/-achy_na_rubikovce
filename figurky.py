@@ -25,35 +25,15 @@ class K(pygame.sprite.Sprite):
     def set_movement(self):
         x,y,ind = self.board[0],self.board[1],self.ind
         self.can_move = False
-        x+=1
-        y+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=1
-        y+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        y+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=1
-        y-=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        y-=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=1
-        y-=1
-        self.setting(x,y)
+        self.setting(x+1,y+1)
+        self.setting(x-1,y+1)
+        self.setting(x,y+1)
+        self.setting(x+1,y)
+        self.setting(x-1,y)
+        self.setting(x-1,y-1)
+        self.setting(x,y-1)
+        self.setting(x+1,y-1)
         if not self.can_move:
-            x,y = self.board[0],self.board[1]
             if not moves_white[ind][y][x] == " ":
                 self.mated = True
     def setting(self,x,y):
@@ -236,37 +216,14 @@ class J(pygame.sprite.Sprite):
         self.type = "J"
     def set_movement(self):
         x,y = self.board[0],self.board[1]
-        x-=1
-        y+=2
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=2
-        y+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=1
-        y-=2
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=2
-        y-=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=1
-        y+=2
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x+=2
-        y+=1
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=1
-        y-=2
-        self.setting(x,y)
-        x,y = self.board[0],self.board[1]
-        x-=2
-        y-=1
-        self.setting(x,y)
+        self.setting(x-1,y+2)
+        self.setting(x-2,y+1)
+        self.setting(x+1,y-2)
+        self.setting(x+2,y-1)
+        self.setting(x+1,y+2)
+        self.setting(x+2,y+1)
+        self.setting(x-1,y-2)
+        self.setting(x-2,y-1)
     def setting(self,x,y):
         if x >-1 and y >-1 and x < 8 and y < 8:
             ind = self.ind
@@ -457,10 +414,109 @@ class P(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
-        self.type = "P"
+        self.type = "P__"
+        self.yes = False
+        self.rotation = 1
     def set_movement(self):
-        pass
-
+        x,y = self.board[0],self.board[1]
+        rotation = self.rotation
+        if rotation == 1:
+            self.setting(x,y+1)
+            self.setting2(x-1,y+1)
+            self.setting2(x+1,y+1)
+            if self.yes:
+                self.setting(x,y+2)
+        elif rotation == 2:
+            self.setting(x-1,y+1)
+            self.setting2(x-1,y)
+            self.setting2(x-1,y-1)
+            if self.yes:
+                self.setting2(x-2,y)
+        elif rotation == 3:
+            self.setting(x,y-1)
+            self.setting2(x-1,y-1)
+            self.setting2(x+1,y-1)
+            if self.yes:
+                self.setting(x,y-2)
+        elif rotation == 4:
+            self.setting(x+1,y+1)
+            self.setting2(x+1,y)
+            self.setting2(x+1,y-1)
+            if self.yes:
+                self.setting(x+2,y)
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+                self.yes = True
+    def setting2(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                pass
+            elif place.capitalize() == place:
+                pass
+            elif place == "k":
+                self.checking = True
+                self.moves[y][x] = "C"
+            else:
+                self.moves[y][x] = "X"
+class P__(pygame.sprite.Sprite):
+    def __init__(self,pos,ind,board):
+        super().__init__()
+        self.image = P_
+        self.rect = self.image.get_rect()
+        self.rect.topleft = pos
+        self.ind = ind
+        self.board = board
+        self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
+        self.checking = False
+        self.type = "P__"
+        self.moved = False
+        self.rotation = 1
+    def set_movement(self):
+        x,y = self.board[0],self.board[1]
+        rotation = self.rotation
+        if rotation == 1:
+            self.setting(x,y+1)
+            self.setting2(x-1,y+1)
+            self.setting2(x+1,y+1)
+        elif rotation == 2:
+            self.setting(x-1,y+1)
+            self.setting2(x-1,y)
+            self.setting2(x-1,y-1)
+        elif rotation == 3:
+            self.setting(x,y-1)
+            self.setting2(x-1,y-1)
+            self.setting2(x+1,y-1)
+        elif rotation == 4:
+            self.setting(x+1,y+1)
+            self.setting2(x+1,y)
+            self.setting2(x+1,y-1)
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                self.moves[y][x] = "X"
+            elif place.capitalize() == place:
+                pass
+    def setting2(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            if place == " ":
+                pass
+            elif place.capitalize() == place:
+                pass
+            elif place == "k":
+                self.checking = True
+                self.moves[y][x] = "C"
+            else:
+                self.moves[y][x] = "X"
 
 def set_position():
     global black,white,moves_black,moves_white
@@ -498,6 +554,10 @@ def set_position():
                     entity = P(pos_screen,pos_ind,pos_board)
                     entity.set_movement()
                     black.add(entity)
+                elif sym == "P__":
+                    entity = P__(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
+                    black.add(entity)
                 elif sym == "v":
                     entity = v(pos_screen,pos_ind,pos_board)
                     entity.set_movement()
@@ -521,6 +581,10 @@ def set_position():
                     white.add(entity)
                 elif sym == "p":
                     entity = p(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
+                    white.add(entity)
+                elif sym == "p__":
+                    entity = p__(pos_screen,pos_ind,pos_board)
                     entity.set_movement()
                     white.add(entity)
     for figure in black:

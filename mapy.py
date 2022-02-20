@@ -1,6 +1,7 @@
 import pygame
 pygame.init()
 
+
 board1 = [" X X X X",
           "X X X X ",
           " X X X X",
