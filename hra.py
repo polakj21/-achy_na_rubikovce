@@ -64,7 +64,6 @@ while True:
             for figure in black:
                 mouse_pos = pygame.mouse.get_pos()
                 if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
-                    figure.set_movement()
                     chosen_one = figure
                     pygame.time.wait(100)
                     selected = True
@@ -105,7 +104,6 @@ while True:
             for figure in white:
                 mouse_pos = pygame.mouse.get_pos()
                 if figure.rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
-                    figure.set_movement()
                     chosen_one = figure
                     pygame.time.wait(100)
                     selected = True

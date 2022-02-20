@@ -25,10 +25,58 @@ class k(pygame.sprite.Sprite):
         self.ind = ind
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
-        self.checking = False
+        self.checking = True
+        self.mated = False
         self.type = "k"
     def set_movement(self):
-        pass
+        x,y,ind = self.board[0],self.board[1],self.ind
+        self.can_move = False
+        x+=1
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y-=1
+        self.setting(x,y)
+        if not self.can_move:
+            x,y = self.board[0],self.board[1]
+            if not moves_black[ind][y][x] == " ":
+                self.mated = True
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            place2 = moves_black[ind][y][x]
+            if place == " " and place2 == " ":
+                self.moves[y][x] = "X"
+                self.can_move = True
+            elif place.lower() == place:
+                pass
+            elif place == "K":
+                self.moves[y][x] = "C"
+            elif place2 == " ":
+                self.moves[y][x] = "X"
+                self.can_move = True
 class d(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board):
         super().__init__()

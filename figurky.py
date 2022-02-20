@@ -7,7 +7,7 @@ screen = pygame.display.set_mode((600,500))
 
 black = pygame.sprite.Group()
 white = pygame.sprite.Group()
-
+kings = pygame.sprite.Group()
 
 
 class K(pygame.sprite.Sprite):
@@ -19,10 +19,58 @@ class K(pygame.sprite.Sprite):
         self.ind = ind
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
-        self.checking = False
+        self.checking = True
+        self.mated = False
         self.type = "K"
     def set_movement(self):
-        pass
+        x,y,ind = self.board[0],self.board[1],self.ind
+        self.can_move = False
+        x+=1
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        y+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x-=1
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        y-=1
+        self.setting(x,y)
+        x,y = self.board[0],self.board[1]
+        x+=1
+        y-=1
+        self.setting(x,y)
+        if not self.can_move:
+            x,y = self.board[0],self.board[1]
+            if not moves_white[ind][y][x] == " ":
+                self.mated = True
+    def setting(self,x,y):
+        if x >-1 and y >-1 and x < 8 and y < 8:
+            ind = self.ind
+            place = positions[ind][y][x]
+            place2 = moves_white[ind][y][x]
+            if place == " " and place2 == " ":
+                self.moves[y][x] = "X"
+                self.can_move = True
+            elif place.capitalize() == place:
+                pass
+            elif place == "k":
+                self.moves[y][x] = "C"
+            elif place2 == " ":
+                self.moves[y][x] = "X"
+                self.can_move = True
 class D(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board):
         super().__init__()
@@ -415,7 +463,11 @@ class P(pygame.sprite.Sprite):
 
 
 def set_position():
-    global black,white
+    global black,white,moves_black,moves_white
+    for m in moves_black:
+        m = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
+    for move in moves_white:
+        move = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
     for pos_ind,position in enumerate(positions):
         for line_ind,line in enumerate(position):
             for sym_ind,sym in enumerate(line):
@@ -423,37 +475,77 @@ def set_position():
                 pos_board = (sym_ind,line_ind)
                 if sym == "V":
                     entity = V(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     black.add(entity)
                 elif sym == "J":
                     entity = J(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     black.add(entity)
                 elif sym == "S":
                     entity = S(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     black.add(entity)
                 elif sym == "D":
                     entity = D(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     black.add(entity)
                 elif sym == "K":
                     entity = K(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
+                    kings.add(entity)
                     black.add(entity)
                 elif sym == "P":
                     entity = P(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     black.add(entity)
                 elif sym == "v":
                     entity = v(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     white.add(entity)
                 elif sym == "j":
                     entity = j(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     white.add(entity)
                 elif sym == "s":
                     entity = s(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     white.add(entity)
                 elif sym == "d":
                     entity = d(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     white.add(entity)
                 elif sym == "k":
                     entity = k(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
+                    kings.add(entity)
                     white.add(entity)
                 elif sym == "p":
                     entity = p(pos_screen,pos_ind,pos_board)
+                    entity.set_movement()
                     white.add(entity)
+    for figure in black:
+        moves = moves_black[figure.ind]
+        for line_ind,line in enumerate(figure.moves):
+            for sym_ind,sym in enumerate(line):
+                if sym == "X" or sym == "C":
+                    moves[line_ind][sym_ind] = sym
+    for figure in white:
+        moves = moves_white[figure.ind]
+        for line_ind,line in enumerate(figure.moves):
+            for sym_ind,sym in enumerate(line):
+                if sym == "X" or sym == "C":
+                    moves[line_ind][sym_ind] = sym
+    king_check()
+def king_check():
+    global black,white,kings,positions
+    x = False
+    for figure in kings:
+        figure.set_movement()
+        if figure.mated:
+            kings.remove(figure)
+            black.remove(figure)
+            white.remove(figure)
+            positions[figure.ind][figure.board[1]][figure.board[0]] = " "
+            x = True
+    if x:
+        set_position()
