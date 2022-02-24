@@ -1,7 +1,5 @@
 import pygame,sys
-from mapy import *
-from figurky import *
-from figurky2 import *
+from šipky import *
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -14,6 +12,8 @@ set_position()
 choise_tile = pygame.Surface((32,32))
 choise_tile.fill("green")
 choise_tile.set_alpha(200, pygame.RLEACCEL)
+
+arrows = pygame.sprite.Group(horizontal_arrow((0,352),((0,1),(1,1),(4,1),(5,1)),None),horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),2))
 
 def get_options(moves,board_ind):
     for line_ind,line in enumerate(moves):
@@ -55,6 +55,8 @@ while True:
                             black.draw(screen)
                             white.draw(screen)
                             pygame.display.flip()
+                        for arrow in arrows:
+                            arrow.refresh()
                     else:
                         pygame.time.wait(100)
                         selected = False
@@ -78,6 +80,8 @@ while True:
                     
             screen.fill((38,33,28))
             set_boards()
+            arrows.update(mouse_pos,"black")
+            arrows.draw(screen)
             black.draw(screen)
             white.draw(screen)
     else:
@@ -102,6 +106,8 @@ while True:
                             black.draw(screen)
                             white.draw(screen)
                             pygame.display.flip()
+                        for arrow in arrows:
+                            arrow.refresh()
                     else:
                         pygame.time.wait(100)
                         selected = False
@@ -126,6 +132,8 @@ while True:
                     
             screen.fill((38,33,28))
             set_boards()
+            arrows.update(mouse_pos,"white")
+            arrows.draw(screen)
             black.draw(screen)
             white.draw(screen)
     pygame.display.update()

@@ -63,6 +63,7 @@ class D(pygame.sprite.Sprite):
         self.checking = False
         self.type = "D"
     def set_movement(self):
+        self.checking = False
         x,y,ind = self.board[0],self.board[1],self.ind
         while x != 0:
             x-=1
@@ -215,6 +216,7 @@ class J(pygame.sprite.Sprite):
         self.checking = False
         self.type = "J"
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         self.setting(x-1,y+2)
         self.setting(x-2,y+1)
@@ -250,6 +252,7 @@ class V(pygame.sprite.Sprite):
         self.checking = False
         self.type = "V"
     def set_movement(self):
+        self.checking = False
         x,y,ind = self.board[0],self.board[1],self.ind
         while x != 0:
             x-=1
@@ -331,6 +334,7 @@ class S(pygame.sprite.Sprite):
         self.checking = False
         self.type = "S"
     def set_movement(self):
+         self.checking = False
          x,y,ind = self.board[0],self.board[1],self.ind
          while x != 0 and y != 0:
             x-=1
@@ -418,6 +422,7 @@ class P(pygame.sprite.Sprite):
         self.yes = False
         self.rotation = 1
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
         if rotation == 1:
@@ -486,6 +491,7 @@ class P__(pygame.sprite.Sprite):
         self.moved = False
         self.rotation = 1
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
         if rotation == 1:

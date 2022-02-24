@@ -69,6 +69,7 @@ class d(pygame.sprite.Sprite):
         self.checking = False
         self.type = "d"
     def set_movement(self):
+        self.checking = False
         x,y,ind = self.board[0],self.board[1],self.ind
         while x != 0:
             x-=1
@@ -221,6 +222,7 @@ class j(pygame.sprite.Sprite):
         self.checking = False
         self.type = "j"
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         self.setting(x-1,y+2)
         self.setting(x-2,y+1)
@@ -255,6 +257,7 @@ class v(pygame.sprite.Sprite):
         self.checking = False
         self.type = "v"
     def set_movement(self):
+        self.checking = False
         x,y,ind = self.board[0],self.board[1],self.ind
         while x != 0:
             x-=1
@@ -335,6 +338,7 @@ class s(pygame.sprite.Sprite):
         self.checking = False
         self.type = "s"
     def set_movement(self):
+        self.checking = False
         x,y,ind = self.board[0],self.board[1],self.ind
         while x != 0 and y != 0:
             x-=1
@@ -422,6 +426,7 @@ class p(pygame.sprite.Sprite):
         self.yes = False
         self.rotation = 1
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
         if rotation == 3:
@@ -490,6 +495,7 @@ class p__(pygame.sprite.Sprite):
         self.moved = False
         self.rotation = 1
     def set_movement(self):
+        self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
         if rotation == 3:
@@ -542,7 +548,7 @@ def transform(color,x,y,ind):
     global positions
     pygame.time.wait(200)
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((160,160))
+    screen = pygame.display.set_mode((176,176))
     if color == "b":
         jezdec = pygame.transform.scale2x(J_)
         jezdec_rect = jezdec.get_rect()
@@ -570,9 +576,9 @@ def transform(color,x,y,ind):
         střelec_rect = střelec.get_rect()
         sn = "s"
         
-    věž_rect.topleft = (32,32)
-    dáma_rect.topleft = (96,32)
-    jezdec_rect.topleft = (32,96)
+    věž_rect.topleft = (16,16)
+    dáma_rect.topleft = (96,16)
+    jezdec_rect.topleft = (16,96)
     střelec_rect.topleft = (96,96)
     b = 0
     while True:
@@ -600,7 +606,7 @@ def transform(color,x,y,ind):
             elif střelec_rect.collidepoint(mouse_pos):
                 positions[ind][y][x] = sn
                 break
-        screen.fill((38,33,28))
+        screen.fill((69,60,50))
         screen.blit(věž,věž_rect)
         screen.blit(dáma,dáma_rect)
         screen.blit(jezdec,jezdec_rect)
