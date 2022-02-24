@@ -29,7 +29,7 @@ def fill(lines,top):
             screen.blit(selected_tile,(symbol_ind*32+poss[line[0]][0],line[1]*32+poss[line[0]][1]))
 
 def rotate(top,direction):
-    global positions
+    global positions,boards
     a = ["","","","","","","",""]
     b = ["","","","","","","",""]
     c = ["","","","","","","",""]
@@ -38,6 +38,30 @@ def rotate(top,direction):
     f = ["","","","","","","",""]
     g = ["","","","","","","",""]
     h = ["","","","","","","",""]
+    A = ["","","","","","","",""]
+    B = ["","","","","","","",""]
+    C = ["","","","","","","",""]
+    D = ["","","","","","","",""]
+    E = ["","","","","","","",""]
+    F = ["","","","","","","",""]
+    G = ["","","","","","","",""]
+    H = ["","","","","","","",""]
+    for sym_ind,sym in enumerate(boards[top][0]):
+        A[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][1]):
+        B[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][2]):
+        C[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][3]):
+        D[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][4]):
+        E[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][5]):
+        F[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][6]):
+        G[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][7]):
+        H[sym_ind] = sym
     for sym_ind,sym in enumerate(positions[top][0]):
         a[sym_ind] = sym
     for sym_ind,sym in enumerate(positions[top][1]):
@@ -55,15 +79,21 @@ def rotate(top,direction):
     for sym_ind,sym in enumerate(positions[top][7]):
         h[sym_ind] = sym
     lines = (a,b,c,d,e,f,g,h)
+    board = (A,B,C,D,E,F,G,H)
     if direction == "right":
         for line_ind,line in enumerate(lines):
-            print(line)
             for sym_ind,sym in enumerate(line):
                 positions[top][-sym_ind-1][line_ind] = sym
+        for line_ind,line in enumerate(board):
+            for sym_ind,sym in enumerate(line):
+                boards[top][-sym_ind-1][line_ind] = sym
     else:
         for line_ind,line in enumerate(lines):
             for sym_ind,sym in enumerate(line):
                 positions[top][sym_ind][-line_ind-1] = sym
+        for line_ind,line in enumerate(board):
+            for sym_ind,sym in enumerate(line):
+                boards[top][sym_ind][-line_ind-1] = sym
         
     black.empty()
     white.empty()
@@ -97,13 +127,17 @@ class horizontal_arrow(pygame.sprite.Sprite):
             else:
                 self.image = horizontal["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings
+        global positions,black,white,kings,boards
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
         b = ["","","","","","","",""]
         c = ["","","","","","","",""]
         d = ["","","","","","","",""]
+        A = ["","","","","","","",""]
+        B = ["","","","","","","",""]
+        C = ["","","","","","","",""]
+        D = ["","","","","","","",""]
         for sym_ind,sym in enumerate(positions[self.lines[0][0]][self.lines[0][1]]):
             a[sym_ind] = sym
         for sym_ind,sym in enumerate(positions[self.lines[1][0]][self.lines[1][1]]):
@@ -112,6 +146,14 @@ class horizontal_arrow(pygame.sprite.Sprite):
             c[sym_ind] = sym
         for sym_ind,sym in enumerate(positions[self.lines[3][0]][self.lines[3][1]]):
             d[sym_ind] = sym
+        for sym_ind,sym in enumerate(boards[self.lines[0][0]][self.lines[0][1]]):
+            A[sym_ind] = sym
+        for sym_ind,sym in enumerate(boards[self.lines[1][0]][self.lines[1][1]]):
+            B[sym_ind] = sym
+        for sym_ind,sym in enumerate(boards[self.lines[2][0]][self.lines[2][1]]):
+            C[sym_ind] = sym
+        for sym_ind,sym in enumerate(boards[self.lines[3][0]][self.lines[3][1]]):
+            D[sym_ind] = sym
         lines = (a,b,c,d)
         for letter in lines:
             if "k" in letter:
@@ -204,6 +246,16 @@ class horizontal_arrow(pygame.sprite.Sprite):
         self.can_be_used = False
         self.refresh_countdown =1
         
+        if direction == "right":
+            boards[self.lines[0][0]][self.lines[0][1]] = D
+            boards[self.lines[1][0]][self.lines[1][1]] = A
+            boards[self.lines[2][0]][self.lines[2][1]] = B
+            boards[self.lines[3][0]][self.lines[3][1]] = C
+        else:
+            boards[self.lines[0][0]][self.lines[0][1]] = B
+            boards[self.lines[1][0]][self.lines[1][1]] = C
+            boards[self.lines[2][0]][self.lines[2][1]] = D
+            boards[self.lines[3][0]][self.lines[3][1]] = A
         if self.top != None:
             rotate(self.top,direction)
         
