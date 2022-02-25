@@ -13,7 +13,16 @@ choise_tile = pygame.Surface((32,32))
 choise_tile.fill("green")
 choise_tile.set_alpha(200, pygame.RLEACCEL)
 
-arrows = pygame.sprite.Group(horizontal_arrow((0,352),((0,1),(1,1),(4,1),(5,1)),None),horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),2))
+arrows = pygame.sprite.Group(horizontal_arrow((0,352),((0,1),(1,1),(4,1),(5,1)),None,None),horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),2,1),
+                             horizontal_arrow((0,384),((0,2),(1,2),(4,2),(5,2)),None,None),horizontal_arrow((0,416),((0,3),(1,3),(4,3),(5,3)),None,None),
+                             horizontal_arrow((0,448),((0,4),(1,4),(4,4),(5,4)),None,None),horizontal_arrow((0,480),((0,5),(1,5),(4,5),(5,5)),None,None),
+                             horizontal_arrow((0,512),((0,6),(1,6),(4,6),(5,6)),None,None),horizontal_arrow((0,544),((0,7),(1,7),(4,7),(5,7)),3,2),
+                             
+                             vertical_arrow((320,0),((2,0),(1,0),(3,0),(5,7)),0,1),vertical_arrow((352,0),((2,1),(1,1),(3,1),(5,6)),None,None),
+                             vertical_arrow((384,0),((2,2),(1,2),(3,2),(5,5)),None,None),vertical_arrow((416,0),((2,3),(1,3),(3,3),(5,4)),None,None),
+                             vertical_arrow((448,0),((2,4),(1,4),(3,4),(5,3)),None,None),vertical_arrow((480,0),((2,5),(1,5),(3,5),(5,2)),None,None),
+                             vertical_arrow((512,0),((2,6),(1,6),(3,6),(5,1)),None,None),vertical_arrow((544,0),((2,7),(1,7),(3,7),(5,0)),4,2)
+                             )
 
 def get_options(moves,board_ind):
     for line_ind,line in enumerate(moves):
