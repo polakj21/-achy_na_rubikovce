@@ -54,6 +54,8 @@ while True:
                 try:
                     if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
                         positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
+                        if chosen_one.type == "P" or chosen_one.type == "P__":
+                            dirs[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.rotation
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
                         set_position()
                         black.empty()
@@ -105,6 +107,8 @@ while True:
                 try:
                     if chosen_one.moves[(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] == "X":
                         positions[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.type
+                        if chosen_one.type == "p" or chosen_one.type == "p__":
+                            dirs[chosen_one.ind][(mouse_pos[1]-poss[chosen_one.ind][1])//32][(mouse_pos[0]-poss[chosen_one.ind][0])//32] = chosen_one.rotation
                         positions[chosen_one.ind][chosen_one.board[1]][chosen_one.board[0]] = " "
                         set_position()
                         black.empty()

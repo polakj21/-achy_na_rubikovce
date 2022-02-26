@@ -412,7 +412,7 @@ class s(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 break
 class p(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pawn_dir):
         super().__init__()
         self.image = p_
         self.rect = self.image.get_rect()
@@ -424,7 +424,7 @@ class p(pygame.sprite.Sprite):
         self.type = "p__"
         self.moved = False
         self.yes = False
-        self.rotation = 1
+        self.rotation = pawn_dir
     def set_movement(self):
         self.checking = False
         x,y = self.board[0],self.board[1]
@@ -438,13 +438,13 @@ class p(pygame.sprite.Sprite):
             if self.yes:
                 self.setting(x,y+2)
         elif rotation == 4:
-            self.setting(x-1,y+1)
-            self.setting2(x-1,y)
+            self.setting2(x-1,y+1)
+            self.setting(x-1,y)
             self.setting2(x-1,y-1)
             if x == 0:
                 transform("w",x,y,self.ind)
             if self.yes:
-                self.setting2(x-2,y)
+                self.setting(x-2,y)
         elif rotation == 1:
             self.setting(x,y-1)
             self.setting2(x-1,y-1)
@@ -454,8 +454,8 @@ class p(pygame.sprite.Sprite):
             if self.yes:
                 self.setting(x,y-2)
         elif rotation == 2:
-            self.setting(x+1,y+1)
-            self.setting2(x+1,y)
+            self.setting2(x+1,y+1)
+            self.setting(x+1,y)
             self.setting2(x+1,y-1)
             if x == 7:
                 transform("w",x,y,self.ind)
@@ -482,7 +482,7 @@ class p(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 class p__(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pawn_dir):
         super().__init__()
         self.image = p_
         self.rect = self.image.get_rect()
@@ -493,7 +493,7 @@ class p__(pygame.sprite.Sprite):
         self.checking = False
         self.type = "p__"
         self.moved = False
-        self.rotation = 1
+        self.rotation = pawn_dir
     def set_movement(self):
         self.checking = False
         x,y = self.board[0],self.board[1]
@@ -505,8 +505,8 @@ class p__(pygame.sprite.Sprite):
             if y == 7:
                 transform("w",x,y,self.ind)
         elif rotation == 4:
-            self.setting(x-1,y+1)
-            self.setting2(x-1,y)
+            self.setting2(x-1,y+1)
+            self.setting(x-1,y)
             self.setting2(x-1,y-1)
             if x == 0:
                 transform("w",x,y,self.ind)
@@ -517,8 +517,8 @@ class p__(pygame.sprite.Sprite):
             if y == 0:
                 transform("w",x,y,self.ind)
         elif rotation == 2:
-            self.setting(x+1,y+1)
-            self.setting2(x+1,y)
+            self.setting2(x+1,y+1)
+            self.setting(x+1,y)
             self.setting2(x+1,y-1)
             if x == 7:
                 transform("w",x,y,self.ind)

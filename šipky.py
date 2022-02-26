@@ -35,7 +35,7 @@ def fill(lines,top,directions):
                         screen.blit(selected_tile,(symbol_ind*32+poss[line[0]][0],row_ind*32+poss[line[0]][1]))
 
 def rotate(top,direction,top_dir):
-    global positions,boards
+    global positions,boards,dirs
     a = ["","","","","","","",""]
     b = ["","","","","","","",""]
     c = ["","","","","","","",""]
@@ -52,22 +52,15 @@ def rotate(top,direction,top_dir):
     F = ["","","","","","","",""]
     G = ["","","","","","","",""]
     H = ["","","","","","","",""]
-    for sym_ind,sym in enumerate(boards[top][0]):
-        A[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][1]):
-        B[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][2]):
-        C[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][3]):
-        D[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][4]):
-        E[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][5]):
-        F[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][6]):
-        G[sym_ind] = sym
-    for sym_ind,sym in enumerate(boards[top][7]):
-        H[sym_ind] = sym
+    aa = ["","","","","","","",""]
+    bb = ["","","","","","","",""]
+    cc = ["","","","","","","",""]
+    dd = ["","","","","","","",""]
+    ee = ["","","","","","","",""]
+    ff = ["","","","","","","",""]
+    gg = ["","","","","","","",""]
+    hh = ["","","","","","","",""]
+    
     for sym_ind,sym in enumerate(positions[top][0]):
         a[sym_ind] = sym
     for sym_ind,sym in enumerate(positions[top][1]):
@@ -84,8 +77,42 @@ def rotate(top,direction,top_dir):
         g[sym_ind] = sym
     for sym_ind,sym in enumerate(positions[top][7]):
         h[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][0]):
+        aa[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][1]):
+        bb[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][2]):
+        cc[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][3]):
+        dd[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][4]):
+        ee[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][5]):
+        ff[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][6]):
+        gg[sym_ind] = sym
+    for sym_ind,sym in enumerate(dirs[top][7]):
+        hh[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][0]):
+        A[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][1]):
+        B[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][2]):
+        C[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][3]):
+        D[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][4]):
+        E[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][5]):
+        F[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][6]):
+        G[sym_ind] = sym
+    for sym_ind,sym in enumerate(boards[top][7]):
+        H[sym_ind] = sym
     lines = (a,b,c,d,e,f,g,h)
     board = (A,B,C,D,E,F,G,H)
+    pdirs = (aa,bb,cc,dd,ee,ff,gg,hh)
+    
     if direction == "right" or direction == "down":
         if top_dir == 1:
             for line_ind,line in enumerate(lines):
@@ -94,6 +121,15 @@ def rotate(top,direction,top_dir):
             for line_ind,line in enumerate(board):
                 for sym_ind,sym in enumerate(line):
                     boards[top][-sym_ind-1][line_ind] = sym
+            for line_ind,line in enumerate(pdirs):
+                for sym_ind,sym in enumerate(line):
+                    try:
+                        sym -= 1
+                        if sym == 0:
+                            sym = 4
+                    except:
+                        pass
+                    dirs[top][-1-sym_ind][line_ind] = sym
         else:
             for line_ind,line in enumerate(lines):
                 for sym_ind,sym in enumerate(line):
@@ -101,6 +137,15 @@ def rotate(top,direction,top_dir):
             for line_ind,line in enumerate(board):
                 for sym_ind,sym in enumerate(line):
                     boards[top][sym_ind][-line_ind-1] = sym
+            for line_ind,line in enumerate(pdirs):
+                for sym_ind,sym in enumerate(line):
+                    try:
+                        sym += 1
+                        if sym == 5:
+                            sym = 1
+                    except:
+                        pass
+                    dirs[top][sym_ind][-1-line_ind] = sym
     else:
         if top_dir == 1:
             for line_ind,line in enumerate(lines):
@@ -109,6 +154,15 @@ def rotate(top,direction,top_dir):
             for line_ind,line in enumerate(board):
                 for sym_ind,sym in enumerate(line):
                     boards[top][sym_ind][-line_ind-1] = sym
+            for line_ind,line in enumerate(pdirs):
+                for sym_ind,sym in enumerate(line):
+                    try:
+                        sym += 1
+                        if sym == 5:
+                            sym = 1
+                    except:
+                        pass
+                    dirs[top][sym_ind][-1-line_ind] = sym
         else:
             for line_ind,line in enumerate(lines):
                 for sym_ind,sym in enumerate(line):
@@ -116,7 +170,15 @@ def rotate(top,direction,top_dir):
             for line_ind,line in enumerate(board):
                 for sym_ind,sym in enumerate(line):
                     boards[top][-sym_ind-1][line_ind] = sym
-        
+            for line_ind,line in enumerate(pdirs):
+                for sym_ind,sym in enumerate(line):
+                    try:
+                        sym -= 1
+                        if sym == 0:
+                            sym = 4
+                    except:
+                        pass
+                    dirs[top][-sym_ind-1][line_ind] = sym
     black.empty()
     white.empty()
     kings.empty()
@@ -150,7 +212,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
             else:
                 self.image = horizontal["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards
+        global positions,black,white,kings,boards,dirs
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -161,6 +223,10 @@ class horizontal_arrow(pygame.sprite.Sprite):
         B = ["","","","","","","",""]
         C = ["","","","","","","",""]
         D = ["","","","","","","",""]
+        aa = ["","","","","","","",""]
+        bb = ["","","","","","","",""]
+        cc = ["","","","","","","",""]
+        dd = ["","","","","","","",""]
         for sym_ind,sym in enumerate(positions[self.lines[0][0]][self.lines[0][1]]):
             a[sym_ind] = sym
         for sym_ind,sym in enumerate(positions[self.lines[1][0]][self.lines[1][1]]):
@@ -177,6 +243,14 @@ class horizontal_arrow(pygame.sprite.Sprite):
             C[sym_ind] = sym
         for sym_ind,sym in enumerate(boards[self.lines[3][0]][self.lines[3][1]]):
             D[sym_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[0][0]][self.lines[0][1]]):
+            aa[sym_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[1][0]][self.lines[1][1]]):
+            bb[sym_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[2][0]][self.lines[2][1]]):
+            cc[sym_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[3][0]][self.lines[3][1]]):
+            dd[sym_ind] = sym
         lines = (a,b,c,d)
         for letter in lines:
             if "k" in letter:
@@ -215,11 +289,19 @@ class horizontal_arrow(pygame.sprite.Sprite):
             positions[self.lines[1][0]][self.lines[1][1]] = c
             positions[self.lines[2][0]][self.lines[2][1]] = d
             positions[self.lines[3][0]][self.lines[3][1]] = a
+            dirs[self.lines[0][0]][self.lines[0][1]] = bb
+            dirs[self.lines[1][0]][self.lines[1][1]] = cc
+            dirs[self.lines[2][0]][self.lines[2][1]] = dd
+            dirs[self.lines[3][0]][self.lines[3][1]] = aa
         else:
             positions[self.lines[0][0]][self.lines[0][1]] = d
             positions[self.lines[1][0]][self.lines[1][1]] = a
             positions[self.lines[2][0]][self.lines[2][1]] = b
             positions[self.lines[3][0]][self.lines[3][1]] = c
+            dirs[self.lines[0][0]][self.lines[0][1]] = dd
+            dirs[self.lines[1][0]][self.lines[1][1]] = aa
+            dirs[self.lines[2][0]][self.lines[2][1]] = bb
+            dirs[self.lines[3][0]][self.lines[3][1]] = cc
         
         black.empty()
         white.empty()
@@ -249,6 +331,10 @@ class horizontal_arrow(pygame.sprite.Sprite):
             positions[self.lines[1][0]][self.lines[1][1]] = b
             positions[self.lines[2][0]][self.lines[2][1]] = c
             positions[self.lines[3][0]][self.lines[3][1]] = d
+            dirs[self.lines[0][0]][self.lines[0][1]] = aa
+            dirs[self.lines[1][0]][self.lines[1][1]] = bb
+            dirs[self.lines[2][0]][self.lines[2][1]] = cc
+            dirs[self.lines[3][0]][self.lines[3][1]] = dd
             black.empty()
             white.empty()
             kings.empty()
@@ -307,7 +393,7 @@ class vertical_arrow(pygame.sprite.Sprite):
             else:
                 self.image = vertical["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards
+        global positions,black,white,kings,boards,dirs
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -318,6 +404,10 @@ class vertical_arrow(pygame.sprite.Sprite):
         B = ["","","","","","","",""]
         C = ["","","","","","","",""]
         D = ["","","","","","","",""]
+        aa = ["","","","","","","",""]
+        bb = ["","","","","","","",""]
+        cc = ["","","","","","","",""]
+        dd = ["","","","","","","",""]
         for line_ind,line in enumerate(positions[self.lines[0][0]]):
             for sym_ind,sym in enumerate(line):
                 if sym_ind == self.lines[0][1]:
@@ -350,6 +440,22 @@ class vertical_arrow(pygame.sprite.Sprite):
             for sym_ind,sym in enumerate(line):
                 if sym_ind == self.lines[3][1]:
                     D[line_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[0][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[0][1]:
+                    aa[line_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[1][1]:
+                    bb[line_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[2][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[2][1]:
+                    cc[line_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[3][1]:
+                    dd[line_ind] = sym
         lines = (a,b,c,d)
         for letter in lines:
             if "k" in letter:
@@ -392,6 +498,32 @@ class vertical_arrow(pygame.sprite.Sprite):
                 line[self.lines[2][1]] = d[-line_ind-1]
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
                 line[self.lines[3][1]] = a[-line_ind-1]
+            for line_ind,line in enumerate(dirs[self.lines[0][0]]):
+                line[self.lines[0][1]] = bb[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                line[self.lines[1][1]] = cc[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[2][0]]):
+                sym = dd[-line_ind-1]
+                try:
+                    sym -= 2
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[2][1]] = sym
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+                sym = aa[-line_ind-1]
+                try:
+                    sym -= 2
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[3][1]] = sym
         else:
             for line_ind,line in enumerate(positions[self.lines[0][0]]):
                 line[self.lines[0][1]] = d[-line_ind-1]
@@ -401,6 +533,32 @@ class vertical_arrow(pygame.sprite.Sprite):
                 line[self.lines[2][1]] = b[line_ind]
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
                 line[self.lines[3][1]] = c[-line_ind-1]
+            for line_ind,line in enumerate(dirs[self.lines[0][0]]):
+                sym = dd[-line_ind-1]
+                try:
+                    sym -= 2
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[0][1]] = sym
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                line[self.lines[1][1]] = aa[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[2][0]]):
+                line[self.lines[2][1]] = bb[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+                sym = cc[-line_ind-1]
+                try:
+                    sym -= 2
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[3][1]] = sym
         
         black.empty()
         white.empty()
@@ -434,6 +592,14 @@ class vertical_arrow(pygame.sprite.Sprite):
                 line[self.lines[2][1]] = c[line_ind]
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
                 line[self.lines[3][1]] = d[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[0][0]]):
+                line[self.lines[0][1]] = aa[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                line[self.lines[1][1]] = bb[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[2][0]]):
+                line[self.lines[2][1]] = cc[line_ind]
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+                line[self.lines[3][1]] = dd[line_ind]
             black.empty()
             white.empty()
             kings.empty()
@@ -499,7 +665,7 @@ class nevim_arrow(pygame.sprite.Sprite):
             else:
                 self.image = horizontal["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards
+        global positions,black,white,kings,boards,dirs
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -510,6 +676,10 @@ class nevim_arrow(pygame.sprite.Sprite):
         B = ["","","","","","","",""]
         C = ["","","","","","","",""]
         D = ["","","","","","","",""]
+        aa = ["","","","","","","",""]
+        bb = ["","","","","","","",""]
+        cc = ["","","","","","","",""]
+        dd = ["","","","","","","",""]
         for sym_ind,sym in enumerate(positions[self.lines[0][0]][self.lines[0][1]]):
             a[sym_ind] = sym
         for line_ind,line in enumerate(positions[self.lines[1][0]]):
@@ -534,6 +704,18 @@ class nevim_arrow(pygame.sprite.Sprite):
             for sym_ind,sym in enumerate(line):
                 if sym_ind == self.lines[3][1]:
                     D[line_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[0][0]][self.lines[0][1]]):
+            aa[sym_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[1][1]:
+                    bb[line_ind] = sym
+        for sym_ind,sym in enumerate(dirs[self.lines[2][0]][self.lines[2][1]]):
+            cc[sym_ind] = sym
+        for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+            for sym_ind,sym in enumerate(line):
+                if sym_ind == self.lines[3][1]:
+                    dd[line_ind] = sym
         lines = (a,b,c,d)
         for letter in lines:
             if "k" in letter:
@@ -575,16 +757,99 @@ class nevim_arrow(pygame.sprite.Sprite):
                 positions[self.lines[2][0]][self.lines[2][1]][sym_ind] = d[-1-sym_ind]
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
                 line[self.lines[3][1]] = a[-line_ind-1]
+            dirs[self.lines[0][0]][self.lines[0][1]] = bb
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                sym = cc[-1-line_ind]
+                try:
+                    sym += 3
+                    if sym == 5:
+                        sym = 1
+                    elif sym == 6:
+                        sym = 2
+                    elif sym == 7:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[1][1]] = sym
+            for sym_ind,sym in enumerate(dirs[self.lines[2][0]][self.lines[2][1]]):
+                sym = dd[-1-sym_ind]
+                try:
+                    sym += 3
+                    if sym == 5:
+                        sym = 1
+                    elif sym == 6:
+                        sym = 2
+                    elif sym == 7:
+                        sym = 3
+                except:
+                    pass
+                dirs[self.lines[2][0]][self.lines[2][1]][sym_ind] = sym
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+                sym = aa[-1-sym_ind]
+                try:
+                    sym += 3
+                    if sym == 5:
+                        sym = 1
+                    elif sym == 6:
+                        sym = 2
+                    elif sym == 7:
+                        sym = 3
+                except:
+                    pass
+                line[self.lines[3][1]] = sym
         else:
             for sym_ind,sym in enumerate(positions[self.lines[0][0]][self.lines[0][1]]):
                 positions[self.lines[0][0]][self.lines[0][1]][sym_ind] = d[-sym_ind-1]
-                print(positions[self.lines[0][0]][self.lines[0][1]])
             for line_ind,line in enumerate(positions[self.lines[1][0]]):
                 line[self.lines[1][1]] = a[line_ind]
             for sym_ind,sym in enumerate(positions[self.lines[2][0]][self.lines[2][1]]):
                 positions[self.lines[2][0]][self.lines[2][1]][sym_ind] = b[-1-sym_ind]
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
                 line[self.lines[3][1]] = c[line_ind]
+            for sym_ind,sym in enumerate(dirs[self.lines[0][0]][self.lines[0][1]]):
+                sym = dd[-sym_ind-1]
+                try:
+                    sym -= 3
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                    elif sym == -2:
+                        sym = 2
+                except:
+                    pass
+                dirs[self.lines[0][0]][self.lines[0][1]][sym_ind] = sym
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                sym = aa[line_ind]
+                try:
+                    sym += 1
+                    if sym == 0:
+                        sym = 4
+                except:
+                    pass
+                line[self.lines[1][1]] = sym
+            for sym_ind,sym in enumerate(dirs[self.lines[2][0]][self.lines[2][1]]):
+                sym = bb[-1-sym_ind]
+                try:
+                    sym -= 3
+                    if sym == 0:
+                        sym = 4
+                    elif sym == -1:
+                        sym = 3
+                    elif sym == -2:
+                        sym = 2
+                except:
+                    pass
+                dirs[self.lines[2][0]][self.lines[2][1]][sym_ind] = sym
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
+                sym = cc[line_ind]
+                try:
+                    sym += 1
+                    if sym == 0:
+                        sym = 4
+                except:
+                    pass
+                line[self.lines[3][1]] = sym
         
         black.empty()
         white.empty()
@@ -615,6 +880,12 @@ class nevim_arrow(pygame.sprite.Sprite):
                 line[self.lines[1][1]] = b[line_ind]
             positions[self.lines[2][0]][self.lines[2][1]] = c
             for line_ind,line in enumerate(positions[self.lines[3][0]]):
+                line[self.lines[3][1]] = d[line_ind]
+            dirs[self.lines[0][0]][self.lines[0][1]] = a
+            for line_ind,line in enumerate(dirs[self.lines[1][0]]):
+                line[self.lines[1][1]] = b[line_ind]
+            dirs[self.lines[2][0]][self.lines[2][1]] = c
+            for line_ind,line in enumerate(dirs[self.lines[3][0]]):
                 line[self.lines[3][1]] = d[line_ind]
             black.empty()
             white.empty()

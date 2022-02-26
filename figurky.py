@@ -409,7 +409,7 @@ class S(pygame.sprite.Sprite):
                 break
 
 class P(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pawn_dir):
         super().__init__()
         self.image = P_
         self.rect = self.image.get_rect()
@@ -420,12 +420,12 @@ class P(pygame.sprite.Sprite):
         self.checking = False
         self.type = "P__"
         self.yes = False
-        self.rotation = 1
+        self.rotation = pawn_dir
     def set_movement(self):
         self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
-        if rotation == 1:
+        if rotation == 3:
             self.setting(x,y+1)
             self.setting2(x-1,y+1)
             self.setting2(x+1,y+1)
@@ -433,15 +433,15 @@ class P(pygame.sprite.Sprite):
                 transform("b",x,y,self.ind)
             if self.yes:
                 self.setting(x,y+2)
-        elif rotation == 2:
-            self.setting(x-1,y+1)
-            self.setting2(x-1,y)
+        elif rotation == 4:
+            self.setting2(x-1,y+1)
+            self.setting(x-1,y)
             self.setting2(x-1,y-1)
             if x == 0:
                 transform("b",x,y,self.ind)
             if self.yes:
-                self.setting2(x-2,y)
-        elif rotation == 3:
+                self.setting(x-2,y)
+        elif rotation == 1:
             self.setting(x,y-1)
             self.setting2(x-1,y-1)
             self.setting2(x+1,y-1)
@@ -449,9 +449,9 @@ class P(pygame.sprite.Sprite):
                 transform("b",x,y,self.ind)
             if self.yes:
                 self.setting(x,y-2)
-        elif rotation == 4:
-            self.setting(x+1,y+1)
-            self.setting2(x+1,y)
+        elif rotation == 2:
+            self.setting2(x+1,y+1)
+            self.setting(x+1,y)
             self.setting2(x+1,y-1)
             if x == 7:
                 transform("b",x,y,self.ind)
@@ -478,7 +478,7 @@ class P(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 class P__(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pawn_dir):
         super().__init__()
         self.image = P_
         self.rect = self.image.get_rect()
@@ -489,32 +489,32 @@ class P__(pygame.sprite.Sprite):
         self.checking = False
         self.type = "P__"
         self.moved = False
-        self.rotation = 1
+        self.rotation = pawn_dir
     def set_movement(self):
         self.checking = False
         x,y = self.board[0],self.board[1]
         rotation = self.rotation
-        if rotation == 1:
+        if rotation == 3:
             self.setting(x,y+1)
             self.setting2(x-1,y+1)
             self.setting2(x+1,y+1)
             if y == 7:
                 transform("b",x,y,self.ind)
-        elif rotation == 2:
-            self.setting(x-1,y+1)
-            self.setting2(x-1,y)
+        elif rotation == 4:
+            self.setting2(x-1,y+1)
+            self.setting(x-1,y)
             self.setting2(x-1,y-1)
             if x == 0:
                 transform("b",x,y,self.ind)
-        elif rotation == 3:
+        elif rotation == 1:
             self.setting(x,y-1)
             self.setting2(x-1,y-1)
             self.setting2(x+1,y-1)
             if y == 0:
                 transform("b",x,y,self.ind)
-        elif rotation == 4:
-            self.setting(x+1,y+1)
-            self.setting2(x+1,y)
+        elif rotation == 2:
+            self.setting2(x+1,y+1)
+            self.setting(x+1,y)
             self.setting2(x+1,y-1)
             if x == 7:
                 transform("b",x,y,self.ind)
@@ -549,6 +549,7 @@ def set_position():
     for pos_ind,position in enumerate(positions):
         for line_ind,line in enumerate(position):
             for sym_ind,sym in enumerate(line):
+                pawn_dir = dirs[pos_ind][line_ind][sym_ind]
                 pos_screen = (sym_ind*32+poss[pos_ind][0],line_ind*32+poss[pos_ind][1])
                 pos_board = (sym_ind,line_ind)
                 if sym == "V":
@@ -573,11 +574,11 @@ def set_position():
                     kings.add(entity)
                     black.add(entity)
                 elif sym == "P":
-                    entity = P(pos_screen,pos_ind,pos_board)
+                    entity = P(pos_screen,pos_ind,pos_board,pawn_dir)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "P__":
-                    entity = P__(pos_screen,pos_ind,pos_board)
+                    entity = P__(pos_screen,pos_ind,pos_board,pawn_dir)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "v":
@@ -602,11 +603,11 @@ def set_position():
                     kings.add(entity)
                     white.add(entity)
                 elif sym == "p":
-                    entity = p(pos_screen,pos_ind,pos_board)
+                    entity = p(pos_screen,pos_ind,pos_board,pawn_dir)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "p__":
-                    entity = p__(pos_screen,pos_ind,pos_board)
+                    entity = p__(pos_screen,pos_ind,pos_board,pawn_dir)
                     entity.set_movement()
                     white.add(entity)
     for figure in black:
