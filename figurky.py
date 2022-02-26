@@ -11,7 +11,7 @@ kings = pygame.sprite.Group()
 
 
 class K(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = K_
         self.rect = self.image.get_rect()
@@ -21,6 +21,7 @@ class K(pygame.sprite.Sprite):
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = True
         self.mated = False
+        self.pos = pos_ind
         self.type = "K"
     def set_movement(self):
         x,y,ind = self.board[0],self.board[1],self.ind
@@ -52,7 +53,7 @@ class K(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 self.can_move = True
 class D(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = D_
         self.rect = self.image.get_rect()
@@ -61,6 +62,7 @@ class D(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "D"
     def set_movement(self):
         self.checking = False
@@ -205,7 +207,7 @@ class D(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 break
 class J(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = J_
         self.rect = self.image.get_rect()
@@ -214,6 +216,7 @@ class J(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "J"
     def set_movement(self):
         self.checking = False
@@ -241,7 +244,7 @@ class J(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
         
 class V(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = V_
         self.rect = self.image.get_rect()
@@ -250,6 +253,7 @@ class V(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "V"
     def set_movement(self):
         self.checking = False
@@ -323,7 +327,7 @@ class V(pygame.sprite.Sprite):
                 break
 
 class S(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = S_
         self.rect = self.image.get_rect()
@@ -332,6 +336,7 @@ class S(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "S"
     def set_movement(self):
          self.checking = False
@@ -409,7 +414,7 @@ class S(pygame.sprite.Sprite):
                 break
 
 class P(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board,pawn_dir):
+    def __init__(self,pos,ind,board,pawn_dir,pos_ind):
         super().__init__()
         self.image = P_
         self.rect = self.image.get_rect()
@@ -418,6 +423,7 @@ class P(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "P__"
         self.yes = False
         self.rotation = pawn_dir
@@ -478,7 +484,7 @@ class P(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 class P__(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board,pawn_dir):
+    def __init__(self,pos,ind,board,pawn_dir,pos_ind):
         super().__init__()
         self.image = P_
         self.rect = self.image.get_rect()
@@ -487,6 +493,7 @@ class P__(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "P__"
         self.moved = False
         self.rotation = pawn_dir
@@ -553,61 +560,61 @@ def set_position():
                 pos_screen = (sym_ind*32+poss[pos_ind][0],line_ind*32+poss[pos_ind][1])
                 pos_board = (sym_ind,line_ind)
                 if sym == "V":
-                    entity = V(pos_screen,pos_ind,pos_board)
+                    entity = V(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "J":
-                    entity = J(pos_screen,pos_ind,pos_board)
+                    entity = J(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "S":
-                    entity = S(pos_screen,pos_ind,pos_board)
+                    entity = S(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "D":
-                    entity = D(pos_screen,pos_ind,pos_board)
+                    entity = D(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "K":
-                    entity = K(pos_screen,pos_ind,pos_board)
+                    entity = K(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     kings.add(entity)
                     black.add(entity)
                 elif sym == "P":
-                    entity = P(pos_screen,pos_ind,pos_board,pawn_dir)
+                    entity = P(pos_screen,pos_ind,pos_board,pawn_dir,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "P__":
-                    entity = P__(pos_screen,pos_ind,pos_board,pawn_dir)
+                    entity = P__(pos_screen,pos_ind,pos_board,pawn_dir,pos_ind)
                     entity.set_movement()
                     black.add(entity)
                 elif sym == "v":
-                    entity = v(pos_screen,pos_ind,pos_board)
+                    entity = v(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "j":
-                    entity = j(pos_screen,pos_ind,pos_board)
+                    entity = j(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "s":
-                    entity = s(pos_screen,pos_ind,pos_board)
+                    entity = s(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "d":
-                    entity = d(pos_screen,pos_ind,pos_board)
+                    entity = d(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "k":
-                    entity = k(pos_screen,pos_ind,pos_board)
+                    entity = k(pos_screen,pos_ind,pos_board,pos_ind)
                     entity.set_movement()
                     kings.add(entity)
                     white.add(entity)
                 elif sym == "p":
-                    entity = p(pos_screen,pos_ind,pos_board,pawn_dir)
+                    entity = p(pos_screen,pos_ind,pos_board,pawn_dir,pos_ind)
                     entity.set_movement()
                     white.add(entity)
                 elif sym == "p__":
-                    entity = p__(pos_screen,pos_ind,pos_board,pawn_dir)
+                    entity = p__(pos_screen,pos_ind,pos_board,pawn_dir,pos_ind)
                     entity.set_movement()
                     white.add(entity)
     for figure in black:

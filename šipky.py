@@ -6,6 +6,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((600,500))
 
+roll = False
 horizontal = {"base" : pygame.image.load("šachy_textury/šipky/0.png").convert_alpha(),
               "right" : pygame.image.load("šachy_textury/šipky/1.png").convert_alpha(),
               "left" : pygame.image.load("šachy_textury/šipky/2.png").convert_alpha(),
@@ -21,6 +22,10 @@ selected_board = pygame.Surface((256,256))
 selected_board.fill("orange")
 selected_board.set_alpha(200, pygame.RLEACCEL)
 
+def antiroll():
+    global roll
+    roll = False
+    
 def fill(lines,top,directions):
     if top != None:
         screen.blit(selected_board,poss[top])
@@ -212,7 +217,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
             else:
                 self.image = horizontal["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards,dirs
+        global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -357,7 +362,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
             boards[self.lines[3][0]][self.lines[3][1]] = A
         if self.top != None:
             rotate(self.top,direction,self.top_dir)
-        
+        roll = True
     def refresh(self):
         if self.refresh_countdown == 0:
             self.image = horizontal["base"]
@@ -393,7 +398,7 @@ class vertical_arrow(pygame.sprite.Sprite):
             else:
                 self.image = vertical["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards,dirs
+        global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -630,7 +635,7 @@ class vertical_arrow(pygame.sprite.Sprite):
                 line[self.lines[3][1]] = A[-line_ind-1]
         if self.top != None:
             rotate(self.top,direction,self.top_dir)
-        
+        roll = True
     def refresh(self):
         if self.refresh_countdown == 0:
             self.image = vertical["base"]
@@ -665,7 +670,7 @@ class nevim_arrow(pygame.sprite.Sprite):
             else:
                 self.image = horizontal["base"]
     def move(self,colour,direction):
-        global positions,black,white,kings,boards,dirs
+        global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
         a = ["","","","","","","",""]
@@ -916,7 +921,7 @@ class nevim_arrow(pygame.sprite.Sprite):
                 line[self.lines[3][1]] = A[-line_ind-1]
         if self.top != None:
             rotate(self.top,direction,self.top_dir)
-        
+        roll = True
     def refresh(self):
         if self.refresh_countdown == 0:
             self.image = horizontal["base"]

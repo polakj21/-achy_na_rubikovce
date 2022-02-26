@@ -17,7 +17,7 @@ s_ = pygame.image.load("šachy_textury/white/střelec.png").convert_alpha()
 p_ = pygame.image.load("šachy_textury/white/pěšec.png").convert_alpha()
 
 class k(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = k_
         self.rect = self.image.get_rect()
@@ -27,6 +27,7 @@ class k(pygame.sprite.Sprite):
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = True
         self.mated = False
+        self.pos = pos_ind
         self.type = "k"
     def set_movement(self):
         x,y,ind = self.board[0],self.board[1],self.ind
@@ -58,7 +59,7 @@ class k(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 self.can_move = True
 class d(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = d_
         self.rect = self.image.get_rect()
@@ -67,6 +68,7 @@ class d(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "d"
     def set_movement(self):
         self.checking = False
@@ -211,7 +213,7 @@ class d(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 break
 class j(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = j_
         self.rect = self.image.get_rect()
@@ -220,6 +222,7 @@ class j(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "j"
     def set_movement(self):
         self.checking = False
@@ -246,7 +249,7 @@ class j(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 class v(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = v_
         self.rect = self.image.get_rect()
@@ -255,6 +258,7 @@ class v(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "v"
     def set_movement(self):
         self.checking = False
@@ -327,7 +331,7 @@ class v(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 break
 class s(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board):
+    def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
         self.image = s_
         self.rect = self.image.get_rect()
@@ -336,6 +340,7 @@ class s(pygame.sprite.Sprite):
         self.board = board
         self.moves = [[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "],[" "," "," "," "," "," "," "," "]]
         self.checking = False
+        self.pos = pos_ind
         self.type = "s"
     def set_movement(self):
         self.checking = False
@@ -412,7 +417,7 @@ class s(pygame.sprite.Sprite):
                 self.moves[y][x] = "X"
                 break
 class p(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board,pawn_dir):
+    def __init__(self,pos,ind,board,pawn_dir,pos_ind):
         super().__init__()
         self.image = p_
         self.rect = self.image.get_rect()
@@ -423,6 +428,7 @@ class p(pygame.sprite.Sprite):
         self.checking = False
         self.type = "p__"
         self.moved = False
+        self.pos = pos_ind
         self.yes = False
         self.rotation = pawn_dir
     def set_movement(self):
@@ -482,7 +488,7 @@ class p(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 class p__(pygame.sprite.Sprite):
-    def __init__(self,pos,ind,board,pawn_dir):
+    def __init__(self,pos,ind,board,pawn_dir,pos_ind):
         super().__init__()
         self.image = p_
         self.rect = self.image.get_rect()
@@ -493,6 +499,7 @@ class p__(pygame.sprite.Sprite):
         self.checking = False
         self.type = "p__"
         self.moved = False
+        self.pos = pos_ind
         self.rotation = pawn_dir
     def set_movement(self):
         self.checking = False
