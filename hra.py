@@ -11,7 +11,6 @@ set_position()
 choise_tile = pygame.Surface((32,32))
 choise_tile.fill("green")
 choise_tile.set_alpha(200, pygame.RLEACCEL)
-comic_sans = pygame.font.SysFont("Comic Sans MS", 30)
 
 arrows = pygame.sprite.Group(horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),2,1),horizontal_arrow((0,352),((0,1),(1,1),(4,1),(5,1)),None,None),
                              horizontal_arrow((0,384),((0,2),(1,2),(4,2),(5,2)),None,None),horizontal_arrow((0,416),((0,3),(1,3),(4,3),(5,3)),None,None),
@@ -28,6 +27,37 @@ arrows = pygame.sprite.Group(horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),
                              nevim_arrow((288,160),((2,4),(4,3),(3,3),(0,4)),None,None),nevim_arrow((288,192),((2,5),(4,2),(3,2),(0,5)),None,None),
                              nevim_arrow((288,224),((2,6),(4,1),(3,1),(0,6)),None,None),nevim_arrow((288,256),((2,7),(4,0),(3,0),(0,7)),1,2)
                              )
+
+def end_check():
+    global selected,colour,rounds,played_at,black,white,kings
+    win_check = 0
+    for king in kings:
+        if king in white:
+            win_check += 1
+    if win_check < 4:
+        game_end(comic_sans.render("!!!BLACK HAVE WON THE GAME!!!",False,("gold")).convert_alpha())
+        selected = False
+        colour = "white"
+        rounds = 3
+        played_at = []
+        black.empty()
+        white.empty()
+        kings.empty()
+        set_position()
+    win_check = 0
+    for king in kings:
+        if king in black:
+            win_check += 1
+    if win_check < 4:
+        game_end(comic_sans.render("!!!WHITE HAVE WON THE GAME!!!",False,("gold")).convert_alpha())
+        selected = False
+        colour = "white"
+        rounds = 3
+        played_at = []
+        black.empty()
+        white.empty()
+        kings.empty()
+        set_position()
 
 def get_options(moves,board_ind):
     for line_ind,line in enumerate(moves):
@@ -87,6 +117,9 @@ while True:
             get_options(chosen_one.moves,chosen_one.ind)
             black.draw(screen)
             white.draw(screen)
+            screen.blit(player_text,(608,64))
+            screen.blit(rounds_text,(608,96))
+            screen.blit(rolls_text,(608,128))
             pygame.display.flip()
         else:
             from šipky import roll
@@ -112,6 +145,7 @@ while True:
             arrows.draw(screen)
             black.draw(screen)
             white.draw(screen)
+            end_check()
     else:
         if selected:
             mouse_pos = pygame.mouse.get_pos()
@@ -144,12 +178,14 @@ while True:
                     pygame.time.wait(100)
                     selected = False
                 
-            
             screen.fill((38,33,28))
             set_boards()
             get_options(chosen_one.moves,chosen_one.ind)
             black.draw(screen)
             white.draw(screen)
+            screen.blit(player_text,(608,64))
+            screen.blit(rounds_text,(608,96))
+            screen.blit(rolls_text,(608,128))
             pygame.display.flip()
         else:
             from šipky import roll
@@ -174,7 +210,8 @@ while True:
             arrows.draw(screen)
             black.draw(screen)
             white.draw(screen)
-    
+            end_check()
+            
     player_text = comic_sans.render("CURENTLY PLAYNG: " + colour.upper(), False, (txt_colour)).convert_alpha()
     rounds_text = comic_sans.render("TURNS LEFT: " + str(rounds), False, (txt_colour)).convert_alpha()
     if roll:
