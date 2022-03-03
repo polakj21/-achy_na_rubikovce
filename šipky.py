@@ -1,7 +1,5 @@
 import pygame,sys
-from mapy import *
 from figurky import *
-from figurky2 import *
 pygame.init()
 
 screen = pygame.display.set_mode((600,500))
