@@ -5,6 +5,7 @@ pygame.init()
 screen = pygame.display.set_mode((600,500))
 
 roll = False
+#textury
 horizontal = {"base" : pygame.image.load("šachy_textury/šipky/0.png").convert_alpha(),
               "right" : pygame.image.load("šachy_textury/šipky/1.png").convert_alpha(),
               "left" : pygame.image.load("šachy_textury/šipky/2.png").convert_alpha(),
@@ -19,11 +20,10 @@ selected_tile.set_alpha(200, pygame.RLEACCEL)
 selected_board = pygame.Surface((256,256))
 selected_board.fill("orange")
 selected_board.set_alpha(200, pygame.RLEACCEL)
-
+#na přeměnění roll v main (z nějakého důvodu to jinak nefungovalo)
 def antiroll():
     global roll
-    roll = False
-    
+#znázornění otočení 
 def fill(lines,top,directions):
     if top != None:
         screen.blit(selected_board,poss[top])
@@ -36,7 +36,7 @@ def fill(lines,top,directions):
                 for symbol_ind,symbol in enumerate(row):
                     if symbol_ind == line[1]:
                         screen.blit(selected_tile,(symbol_ind*32+poss[line[0]][0],row_ind*32+poss[line[0]][1]))
-
+#otočení plochy
 def rotate(top,direction,top_dir):
     global positions,boards,dirs
     a = ["","","","","","","",""]
@@ -182,12 +182,13 @@ def rotate(top,direction,top_dir):
                     except:
                         pass
                     dirs[top][-sym_ind-1][line_ind] = sym
+    #vymazání aktuálních group
     black.empty()
     white.empty()
     kings.empty()
     set_position()
         
-
+#šipky na otáčení jen horizontálně
 class horizontal_arrow(pygame.sprite.Sprite):
     def __init__(self,pos,lines,top,top_dir):
         super().__init__()
@@ -201,6 +202,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
         self.can_be_used = True
         self.refresh_countdown = 0
     def update(self,mouse_pos,colour):
+        #kolize s myší
         if self.can_be_used:
             if self.rect.collidepoint(mouse_pos):
                 fill(self.lines,self.top,("horizontal","horizontal","horizontal","horizontal"))
@@ -218,6 +220,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
         global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
+        #nastavení lajn
         a = ["","","","","","","",""]
         b = ["","","","","","","",""]
         c = ["","","","","","","",""]
@@ -255,16 +258,18 @@ class horizontal_arrow(pygame.sprite.Sprite):
         for sym_ind,sym in enumerate(dirs[self.lines[3][0]][self.lines[3][1]]):
             dd[sym_ind] = sym
         lines = (a,b,c,d)
+        #kontrola, zda se neotáčí králem
         for letter in lines:
             if "k" in letter:
                 return
             elif "K" in letter:
                 return
+        #nastavení rectangelů po otáčených polích
         rects = [pygame.Rect(poss[self.lines[0][0]][0],poss[self.lines[0][0]][1]+3+(self.lines[0][1]*32),256,1),
                  pygame.Rect(poss[self.lines[1][0]][0],poss[self.lines[1][0]][1]+3+(self.lines[1][1]*32),256,1),
                  pygame.Rect(poss[self.lines[2][0]][0],poss[self.lines[2][0]][1]+3+(self.lines[2][1]*32),256,1),
                  pygame.Rect(poss[self.lines[3][0]][0],poss[self.lines[3][0]][1]+3+(self.lines[3][1]*32),256,1)]
-        
+        #počítání figurek + kontrola,zda nějaká otáčená figurka nemá krále v šachu
         if colour == "black":
             for king in kings:
                 if king in black:
@@ -287,6 +292,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
                     for rectangle in rects:
                         if figure.rect.colliderect(rectangle):
                             return
+        #otáčení figurek a směrů pěšců
         if direction == "left":
             positions[self.lines[0][0]][self.lines[0][1]] = b
             positions[self.lines[1][0]][self.lines[1][1]] = c
@@ -310,7 +316,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
         white.empty()
         kings.empty()
         set_position()
-        
+        #kontrola, zda je otočení validní 
         check_kings_2 = 0
         figures_2 = 0
         
@@ -330,6 +336,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
                     figures_2+=1
                     
         if figures < figures_2 or check_kings_2 != check_kings:
+            #pokud ne, tak vše vrátí do původního stavu
             positions[self.lines[0][0]][self.lines[0][1]] = a
             positions[self.lines[1][0]][self.lines[1][1]] = b
             positions[self.lines[2][0]][self.lines[2][1]] = c
@@ -343,11 +350,11 @@ class horizontal_arrow(pygame.sprite.Sprite):
             kings.empty()
             set_position()
             return
-        
+        #pokud ne, změní se některé proměné
         self.image = horizontal["deactive"]
         self.can_be_used = False
         self.refresh_countdown =1
-        
+        #otočení šachovnic
         if direction == "right":
             boards[self.lines[0][0]][self.lines[0][1]] = D
             boards[self.lines[1][0]][self.lines[1][1]] = A
@@ -361,6 +368,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
         if self.top != None:
             rotate(self.top,direction,self.top_dir)
         roll = True
+    #obnovuje šipku dpo použitelného stavu
     def refresh(self):
         if self.refresh_countdown == 0:
             self.image = horizontal["base"]
@@ -368,7 +376,7 @@ class horizontal_arrow(pygame.sprite.Sprite):
         else:
             self.refresh_countdown -=1
             
-            
+#pohybuje pouze vertikálně   
 class vertical_arrow(pygame.sprite.Sprite):
     def __init__(self,pos,lines,top,top_dir):
         super().__init__()
@@ -382,6 +390,7 @@ class vertical_arrow(pygame.sprite.Sprite):
         self.can_be_used = True
         self.refresh_countdown = 0
     def update(self,mouse_pos,colour):
+        #kontroluje kolize s myší
         if self.can_be_used:
             if self.rect.collidepoint(mouse_pos):
                 fill(self.lines,self.top,("vertical","vertical","vertical","vertical"))
@@ -399,6 +408,7 @@ class vertical_arrow(pygame.sprite.Sprite):
         global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
+        #nastavení otáčených lajn
         a = ["","","","","","","",""]
         b = ["","","","","","","",""]
         c = ["","","","","","","",""]
@@ -460,16 +470,18 @@ class vertical_arrow(pygame.sprite.Sprite):
                 if sym_ind == self.lines[3][1]:
                     dd[line_ind] = sym
         lines = (a,b,c,d)
+        #kontrola, zda se neotáčí králem
         for letter in lines:
             if "k" in letter:
                 return
             elif "K" in letter:
                 return
+        #rectangely na otáčených lajnách
         rects = [pygame.Rect(poss[self.lines[0][0]][0]+3+(self.lines[0][1]*32),poss[self.lines[0][0]][1],1,256),
                  pygame.Rect(poss[self.lines[1][0]][0]+3+(self.lines[1][1]*32),poss[self.lines[1][0]][1],1,256),
                  pygame.Rect(poss[self.lines[2][0]][0]+3+(self.lines[2][1]*32),poss[self.lines[2][0]][1],1,256),
                  pygame.Rect(poss[self.lines[3][0]][0]+3+(self.lines[3][1]*32),poss[self.lines[3][0]][1],1,256)]
-        
+        #počítání figurek + kontrola,zda nemá nějaká otáčená figurka krále v šachu
         if colour == "black":
             for king in kings:
                 if king in black:
@@ -492,6 +504,7 @@ class vertical_arrow(pygame.sprite.Sprite):
                     for rectangle in rects:
                         if figure.rect.colliderect(rectangle):
                             return
+        #otáčení figurek + směrů pěšců
         if direction == "down":
             for line_ind,line in enumerate(positions[self.lines[0][0]]):
                 line[self.lines[0][1]] = b[line_ind]
@@ -567,7 +580,7 @@ class vertical_arrow(pygame.sprite.Sprite):
         white.empty()
         kings.empty()
         set_position()
-        
+        #kontrola, zda je otočení validní
         check_kings_2 = 0
         figures_2 = 0
         
@@ -587,6 +600,7 @@ class vertical_arrow(pygame.sprite.Sprite):
                     figures_2+=1
                     
         if figures < figures_2 or check_kings_2 != check_kings:
+            #pokud ne, vrátí vše do půvofního stavu
             for line_ind,line in enumerate(positions[self.lines[0][0]]):
                 line[self.lines[0][1]] = a[line_ind]
             for line_ind,line in enumerate(positions[self.lines[1][0]]):
@@ -608,11 +622,11 @@ class vertical_arrow(pygame.sprite.Sprite):
             kings.empty()
             set_position()
             return
-        
+        #pokud ano přenastavá nějaké proměné
         self.image = vertical["deactive"]
         self.can_be_used = False
         self.refresh_countdown =1
-        
+        #otočení šachovnic
         if direction == "up":
             for line_ind,line in enumerate(boards[self.lines[0][0]]):
                 line[self.lines[0][1]] = D[-line_ind-1]
@@ -634,13 +648,14 @@ class vertical_arrow(pygame.sprite.Sprite):
         if self.top != None:
             rotate(self.top,direction,self.top_dir)
         roll = True
+    #zajišťuje obnovení šipky
     def refresh(self):
         if self.refresh_countdown == 0:
             self.image = vertical["base"]
             self.can_be_used = True
         else:
             self.refresh_countdown -=1
-
+#otáčí půlku horizontálně a půlku vertikálně
 class nevim_arrow(pygame.sprite.Sprite):
     def __init__(self,pos,lines,top,top_dir):
         super().__init__()
@@ -654,6 +669,7 @@ class nevim_arrow(pygame.sprite.Sprite):
         self.can_be_used = True
         self.refresh_countdown = 0
     def update(self,mouse_pos,colour):
+        #kolize s myší
         if self.can_be_used:
             if self.rect.collidepoint(mouse_pos):
                 fill(self.lines,self.top,("horizontal","vertical","horizontal","vertical"))
@@ -671,6 +687,7 @@ class nevim_arrow(pygame.sprite.Sprite):
         global positions,black,white,kings,boards,dirs,roll
         figures = 0
         check_kings = 0
+        #nastavení otáčených lajn
         a = ["","","","","","","",""]
         b = ["","","","","","","",""]
         c = ["","","","","","","",""]
@@ -720,16 +737,18 @@ class nevim_arrow(pygame.sprite.Sprite):
                 if sym_ind == self.lines[3][1]:
                     dd[line_ind] = sym
         lines = (a,b,c,d)
+        #kontrola, zda se neotáčí králem
         for letter in lines:
             if "k" in letter:
                 return
             elif "K" in letter:
                 return
+        #rect na lajnách
         rects = [pygame.Rect(poss[self.lines[0][0]][0],poss[self.lines[0][0]][1]+3+(self.lines[0][1]*32),256,1),
                  pygame.Rect(poss[self.lines[1][0]][0]+3+(self.lines[1][1]*32),poss[self.lines[1][0]][1],1,256),
                  pygame.Rect(poss[self.lines[2][0]][0],poss[self.lines[2][0]][1]+3+(self.lines[2][1]*32),256,1),
                  pygame.Rect(poss[self.lines[3][0]][0]+3+(self.lines[3][1]*32),poss[self.lines[3][0]][1],1,256)]
-        
+        #kontrola zda nějaká otáčená figurka šachuje krále + trochu toho počítání
         if colour == "black":
             for king in kings:
                 if king in black:
@@ -752,6 +771,7 @@ class nevim_arrow(pygame.sprite.Sprite):
                     for rectangle in rects:
                         if figure.rect.colliderect(rectangle):
                             return
+        #otáčení
         if direction == "left":
             positions[self.lines[0][0]][self.lines[0][1]] = b
             for line_ind,line in enumerate(positions[self.lines[1][0]]):
@@ -858,7 +878,7 @@ class nevim_arrow(pygame.sprite.Sprite):
         white.empty()
         kings.empty()
         set_position()
-        
+        #kontrola, zda je otočení validní
         check_kings_2 = 0
         figures_2 = 0
         
@@ -878,6 +898,7 @@ class nevim_arrow(pygame.sprite.Sprite):
                     figures_2+=1
                     
         if figures < figures_2 or check_kings_2 != check_kings:
+            #pokud ne, vrátí vše do původníhu stavu
             positions[self.lines[0][0]][self.lines[0][1]] = a
             for line_ind,line in enumerate(positions[self.lines[1][0]]):
                 line[self.lines[1][1]] = b[line_ind]
@@ -895,11 +916,11 @@ class nevim_arrow(pygame.sprite.Sprite):
             kings.empty()
             set_position()
             return
-        
+        #změna pár proměnných
         self.image = horizontal["deactive"]
         self.can_be_used = False
         self.refresh_countdown =1
-        
+        #otočení šachovnic
         if direction == "right":
             for sym_ind,sym in enumerate(boards[self.lines[0][0]][self.lines[0][1]]):
                 boards[self.lines[0][0]][self.lines[0][1]][sym_ind] = D[-sym_ind-1]
@@ -921,6 +942,7 @@ class nevim_arrow(pygame.sprite.Sprite):
             rotate(self.top,direction,self.top_dir)
         roll = True
     def refresh(self):
+        #zajištění obnovy šipek
         if self.refresh_countdown == 0:
             self.image = horizontal["base"]
             self.can_be_used = True

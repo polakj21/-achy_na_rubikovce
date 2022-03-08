@@ -3,6 +3,7 @@ from mapy import *
 pygame.init()
 
 screen = pygame.display.set_mode((600,500))
+#textury
 K_ = pygame.image.load("šachy_textury/black/král.png").convert_alpha()
 D_ = pygame.image.load("šachy_textury/black/dáma.png").convert_alpha()
 J_ = pygame.image.load("šachy_textury/black/jezdec.png").convert_alpha()
@@ -15,7 +16,7 @@ j_ = pygame.image.load("šachy_textury/white/jezdec.png").convert_alpha()
 v_ = pygame.image.load("šachy_textury/white/věž.png").convert_alpha()
 s_ = pygame.image.load("šachy_textury/white/střelec.png").convert_alpha()
 p_ = pygame.image.load("šachy_textury/white/pěšec.png").convert_alpha()
-
+#bíle figurky
 class k(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
@@ -550,12 +551,14 @@ class p__(pygame.sprite.Sprite):
                 self.moves[y][x] = "C"
             else:
                 self.moves[y][x] = "X"
-                
+
+#proměna pěšců
 def transform(color,x,y,ind):
     global positions
     pygame.time.wait(200)
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((176,176))
+    #kontrola zda černý, či bílý
     if color == "b":
         jezdec = pygame.transform.scale2x(J_)
         jezdec_rect = jezdec.get_rect()
@@ -588,6 +591,7 @@ def transform(color,x,y,ind):
     jezdec_rect.topleft = (16,96)
     střelec_rect.topleft = (96,96)
     b = 0
+    #main loop
     while True:
         events = pygame.event.get()
         for event in events:

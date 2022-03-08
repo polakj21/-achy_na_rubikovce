@@ -9,7 +9,7 @@ black = pygame.sprite.Group()
 white = pygame.sprite.Group()
 kings = pygame.sprite.Group()
 
-
+#jednotlivé černé figurky
 class K(pygame.sprite.Sprite):
     def __init__(self,pos,ind,board,pos_ind):
         super().__init__()
@@ -547,6 +547,7 @@ class P__(pygame.sprite.Sprite):
             else:
                 self.moves[y][x] = "X"
 
+#nastavení figurek
 def set_position():
     global black,white,moves_black,moves_white
     for m in moves_black:
@@ -630,7 +631,7 @@ def set_position():
                 if sym == "X" or sym == "C":
                     moves[line_ind][sym_ind] = sym
     king_check()
-    
+#dodatečná kontrola, zda e král v matu
 def king_check():
     global black,white,kings,positions
     x = False

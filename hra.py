@@ -1,5 +1,6 @@
 import pygame,sys
 from šipky import *
+#základní věci
 pygame.init()
 clock = pygame.time.Clock()
 pygame.display.set_caption("¤šachy na rubikovce¤")
@@ -11,7 +12,7 @@ set_position()
 choise_tile = pygame.Surface((32,32))
 choise_tile.fill("green")
 choise_tile.set_alpha(200, pygame.RLEACCEL)
-
+#umístění šipek
 arrows = pygame.sprite.Group(horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),2,1),horizontal_arrow((0,352),((0,1),(1,1),(4,1),(5,1)),None,None),
                              horizontal_arrow((0,384),((0,2),(1,2),(4,2),(5,2)),None,None),horizontal_arrow((0,416),((0,3),(1,3),(4,3),(5,3)),None,None),
                              horizontal_arrow((0,448),((0,4),(1,4),(4,4),(5,4)),None,None),horizontal_arrow((0,480),((0,5),(1,5),(4,5),(5,5)),None,None),
@@ -27,7 +28,7 @@ arrows = pygame.sprite.Group(horizontal_arrow((0,320),((0,0),(1,0),(4,0),(5,0)),
                              nevim_arrow((288,160),((2,4),(4,3),(3,3),(0,4)),None,None),nevim_arrow((288,192),((2,5),(4,2),(3,2),(0,5)),None,None),
                              nevim_arrow((288,224),((2,6),(4,1),(3,1),(0,6)),None,None),nevim_arrow((288,256),((2,7),(4,0),(3,0),(0,7)),1,2)
                              )
-
+#kontroluje zda někdo vyhrál
 def end_check():
     global selected,colour,rounds,played_at,black,white,kings
     win_check = 0
@@ -58,19 +59,21 @@ def end_check():
         white.empty()
         kings.empty()
         set_position()
-
+#zobrazuje kam lze figurku pohnout
 def get_options(moves,board_ind):
     for line_ind,line in enumerate(moves):
         for sym_ind,sym in enumerate(line):
             if sym == "X":
                 screen.blit(choise_tile,(sym_ind*32+poss[board_ind][0],line_ind*32+poss[board_ind][1]))                
-
+#další hodnoty
 txt_colour = (69,60,50)
 selected = False
 colour = "white"
 rounds = 3
 played_at = []
+#main loop
 while True:
+    #exit
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
@@ -80,7 +83,9 @@ while True:
     if key[pygame.K_ESCAPE]:
         pygame.quit()
         sys.exit()
+    #kolo černého
     if colour == "black": 
+        #pohyb figurkou
         if selected:
             mouse_pos = pygame.mouse.get_pos()
             if pygame.mouse.get_pressed()[0]:
@@ -122,6 +127,7 @@ while True:
             screen.blit(rolls_text,(608,128))
             pygame.display.flip()
         else:
+            #výběr figurky
             from šipky import roll
             mouse_pos = pygame.mouse.get_pos()
             if rounds == 0 and roll:
@@ -146,7 +152,9 @@ while True:
             black.draw(screen)
             white.draw(screen)
             end_check()
+    #kolo bílého
     else:
+        #pohyb figurkou
         if selected:
             mouse_pos = pygame.mouse.get_pos()
             if pygame.mouse.get_pressed()[0]:
@@ -188,6 +196,7 @@ while True:
             screen.blit(rolls_text,(608,128))
             pygame.display.flip()
         else:
+            #výběr figurky
             from šipky import roll
             mouse_pos = pygame.mouse.get_pos()
             if rounds == 0 and roll:
@@ -211,7 +220,7 @@ while True:
             black.draw(screen)
             white.draw(screen)
             end_check()
-            
+    #text       
     player_text = comic_sans.render("CURENTLY PLAYNG: " + colour.upper(), False, (txt_colour)).convert_alpha()
     rounds_text = comic_sans.render("TURNS LEFT: " + str(rounds), False, (txt_colour)).convert_alpha()
     if roll:

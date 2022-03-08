@@ -1,7 +1,7 @@
 import pygame
 pygame.init()
 
-
+#textury šachovnice
 board1 = [[" ","X"," ","X"," ","X"," ","X"],
           ["X"," ","X"," ","X"," ","X"," "],
           [" ","X"," ","X"," ","X"," ","X"],
@@ -51,6 +51,7 @@ board6 = [[" ","X"," ","X"," ","X"," ","X"],
           [" ","X"," ","X"," ","X"," ","X"],
           ["X"," ","X"," ","X"," ","X"," "]]
 boards = [board1,board2,board3,board4,board5,board6]
+#pozice figurek
 position1 = [["V","J","S","D","K","S","J","V"],
              ["P","P","P","P","P","P","P","P"],
              [" "," "," "," "," "," "," "," "],
@@ -108,7 +109,7 @@ position3 = [["V","J","S","D","K","S","J","V"],
              ["p","p","p","p","p","p","p","p"],
              ["v","j","s","d","k","s","j","v"]]
 positions = [position1,position2,position3,position4,position5,position6]
- 
+#možné tahy (využívají králové)
 moves2_black = [[" "," "," "," "," "," "," "," "],
         [" "," "," "," "," "," "," "," "],
         [" "," "," "," "," "," "," "," "],
@@ -209,7 +210,7 @@ moves1_white = [[" "," "," "," "," "," "," "," "],
 
 moves_white = [moves1_white,moves2_white,moves3_white,moves4_white,moves5_white,moves6_white]
 moves_black = [moves1_black,moves2_black,moves3_black,moves4_black,moves5_black,moves6_black]
-
+#směri pěšců
 pawn_dir1 = [[" "," "," "," "," "," "," "," "],
         [3,3,3,3,3,3,3,3],
         [" "," "," "," "," "," "," "," "],
@@ -260,9 +261,11 @@ pawn_dir6 = [[" "," "," "," "," "," "," "," "],
         [" "," "," "," "," "," "," "," "]]
 dirs = [pawn_dir1,pawn_dir2,pawn_dir3,pawn_dir4,pawn_dir5,pawn_dir6,]
 
-#poss = ((32,320),(320,320),(320,32),(320,608),(608,320),(896,320))
-poss = ((32,320),(320,320),(320,32),(10,10),(608,320),(896,320))
+#pozice šachovnic
+poss = ((32,320),(320,320),(320,32),(320,608),(608,320),(896,320))
+#poss = ((32,320),(320,320),(320,32),(10,10),(608,320),(896,320))
 
+#dalšíhodnoty
 screen = pygame.display.set_mode((600,500))
 under_tile = pygame.Surface((256,256))
 under_tile.fill((156,138,112))
@@ -270,6 +273,7 @@ tile = pygame.Surface((32,32))
 tile.fill((69,60,50))
 comic_sans = pygame.font.SysFont("Comic Sans MS", 30)
 
+#vykresalení šachovnice
 def set_boards():
     screen.blit(under_tile,poss[0])
     screen.blit(under_tile,poss[1])
@@ -282,7 +286,8 @@ def set_boards():
             for sym_ind,sym in enumerate(line):
                 if sym == "X":
                     screen.blit(tile,(sym_ind*32+poss[board_ind][0],line_ind*32+poss[board_ind][1]))
-                    
+  
+#reset
 def game_end(text):
     global moves_white,movws_black,dirs,positions,boards
     restart = False
