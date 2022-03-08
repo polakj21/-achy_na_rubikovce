@@ -23,6 +23,7 @@ selected_board.set_alpha(200, pygame.RLEACCEL)
 #na přeměnění roll v main (z nějakého důvodu to jinak nefungovalo)
 def antiroll():
     global roll
+    roll = False
 #znázornění otočení 
 def fill(lines,top,directions):
     if top != None:
